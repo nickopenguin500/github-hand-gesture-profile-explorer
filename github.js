@@ -57,7 +57,8 @@ async function showRepoDetails(repo) {
     document.getElementById('modal-repo-issues').innerHTML = `Issues: <span>${repo.open_issues_count}</span>`;
     document.getElementById('modal-repo-license').innerHTML = `License: <span>${repo.license ? repo.license.name : 'N/A'}</span>`;
     document.getElementById('modal-repo-size').innerHTML = `Size: <span>${repo.size > 1024 ? (repo.size / 1024).toFixed(2) + ' MB' : repo.size + ' KB'}</span>`;
-    
+    document.getElementById('modal-repo-link').href = repo.html_url;
+
     // Process Topics (Tags)
     const topicsContainer = document.getElementById('repo-topics');
     topicsContainer.innerHTML = ''; 
@@ -127,3 +128,7 @@ async function showRepoDetails(repo) {
 
 // --- 4. EXPORTS AND EVENT LISTENERS ---
 window.fetchGitHubProfile = fetchGitHubProfile;
+
+window.closeModal = function() {
+    document.getElementById('repo-modal').classList.add('hidden');
+};

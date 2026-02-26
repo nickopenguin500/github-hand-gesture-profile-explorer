@@ -10,9 +10,6 @@ searchBtn.addEventListener('click', () => {
     if (username) fetchGitHubProfile(username);
 });
 
-closeBtn.addEventListener('click', () => {
-    modal.classList.add('hidden');
-});
 
 // --- 2. WEBCAM GESTURE CONTROLS ---
 document.addEventListener('hand-pinch', (event) => {
@@ -28,8 +25,8 @@ document.addEventListener('hand-pinch', (event) => {
         // 1. Back Button Collision Check
         const closeRect = closeBtn.getBoundingClientRect();
         if (px >= closeRect.left && px <= closeRect.right && py >= closeRect.top && py <= closeRect.bottom) {
-            modal.classList.add('hidden');
-            return; // Stop checking anything else
+            window.closeModal(); // Call the global function
+            return; 
         }
 
         // 2. View on GitHub Link Collision Check
