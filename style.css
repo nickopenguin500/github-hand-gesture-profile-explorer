@@ -243,3 +243,8 @@ input, button {
 #modal-repo-link:hover {
     transform: scale(1.05);
 }
+
+/* Add this to the bottom of style.css */
+.mirrored {
+    transform: scaleX(-1);
+}

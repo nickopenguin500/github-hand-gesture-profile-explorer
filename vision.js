@@ -1,11 +1,28 @@
 const videoElement = document.getElementById('videoElement');
 const cursor = document.getElementById('cursor');
+const mirrorBtn = document.getElementById('mirror-btn'); // New button
 
 let isPinching = false;
 let cursorX = 0;
 let cursorY = 0;
 let lastProcessTime = 0;
-const FRAME_RATE = 15; // Only process 15 frames per second to prevent "AI busy" spam
+const FRAME_RATE = 15; 
+
+// --- NEW MIRROR LOGIC ---
+let isMirrored = true; // Default to true
+videoElement.classList.add('mirrored'); // Flip visually on load
+
+mirrorBtn.addEventListener('click', () => {
+    isMirrored = !isMirrored;
+    if (isMirrored) {
+        videoElement.classList.add('mirrored');
+        mirrorBtn.innerText = "Mirror Camera: ON";
+    } else {
+        videoElement.classList.remove('mirrored');
+        mirrorBtn.innerText = "Mirror Camera: OFF";
+    }
+});
+// ------------------------
 
 const hands = new Hands({
     locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
@@ -13,7 +30,7 @@ const hands = new Hands({
 
 hands.setOptions({
     maxNumHands: 1,
-    modelComplexity: 0, // 0 is faster/lighter for web use
+    modelComplexity: 0, 
     minDetectionConfidence: 0.5,
     minTrackingConfidence: 0.5
 });
@@ -24,9 +41,18 @@ hands.onResults((results) => {
         const indexFinger = landmarks[8];
         const thumb = landmarks[4];
 
-        // Map coordinates to window
-        cursorX = indexFinger.x * window.innerWidth;
+        // --- NEW COORDINATE MAPPING ---
+        let rawX = indexFinger.x;
+        
+        // If mirrored, flip the X coordinate (MediaPipe uses 0.0 to 1.0)
+        if (isMirrored) {
+            rawX = 1.0 - rawX; 
+        }
+
+        // Map adjusted coordinates to window
+        cursorX = rawX * window.innerWidth;
         cursorY = indexFinger.y * window.innerHeight;
+        // ------------------------------
 
         cursor.style.left = `${cursorX}px`;
         cursor.style.top = `${cursorY}px`;
