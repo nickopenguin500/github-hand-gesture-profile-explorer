@@ -51,7 +51,7 @@ input, button {
     border-radius: 50%;
     position: absolute;
     pointer-events: none; /* Lets clicks pass through the dot */
-    z-index: 1000;
+    z-index: 9999;
     transition: transform 0.1s;
 }
 
@@ -124,8 +124,13 @@ input, button {
 
 .modal-stats {
     display: flex;
-    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
     margin: 20px 0;
+    color: #c9d1d9;
+    font-size: 14px;
+}
+.modal-stats span {
     font-weight: bold;
     color: #58a6ff;
 }

@@ -18,16 +18,16 @@ async function fetchGitHubProfile(username) {
         
         repoList.innerHTML = ""; 
         reposData.forEach(repo => {
-            // We store the repo data directly on the element as a 'data' attribute
             const repoDiv = document.createElement('div');
             repoDiv.className = 'repo-card';
+            
+            // Cleaned up the mini cards (No emojis)
             repoDiv.innerHTML = `
                 <h4>${repo.name}</h4>
-                <p>${repo.description || "No description."}</p>
-                <small>💻 ${repo.language || "Mixed"}</small>
+                <p>${repo.description || "No description provided."}</p>
+                <small>Language: ${repo.language || "Mixed"}</small>
             `;
             
-            // When clicked/pinched, show details
             repoDiv.addEventListener('click', () => showRepoDetails(repo));
             repoList.appendChild(repoDiv);
         });
@@ -42,10 +42,18 @@ async function fetchGitHubProfile(username) {
 
 function showRepoDetails(repo) {
     document.getElementById('modal-repo-name').innerText = repo.name;
-    document.getElementById('modal-repo-desc').innerText = repo.description || "No description.";
-    document.getElementById('modal-repo-lang').innerText = `Language: ${repo.language || 'N/A'}`;
-    document.getElementById('modal-repo-stars').innerText = `⭐ ${repo.stargazers_count}`;
-    document.getElementById('modal-repo-forks').innerText = `🍴 ${repo.forks_count}`;
+    document.getElementById('modal-repo-desc').innerText = repo.description || "No detailed description provided by the author.";
+    
+    // Richer data points (No emojis)
+    document.getElementById('modal-repo-lang').innerHTML = `Language: <span>${repo.language || 'N/A'}</span>`;
+    document.getElementById('modal-repo-stars').innerHTML = `Stars: <span>${repo.stargazers_count}</span>`;
+    document.getElementById('modal-repo-forks').innerHTML = `Forks: <span>${repo.forks_count}</span>`;
+    document.getElementById('modal-repo-issues').innerHTML = `Open Issues: <span>${repo.open_issues_count}</span>`;
+    
+    // Format the date nicely
+    const updateDate = new Date(repo.updated_at).toLocaleDateString();
+    document.getElementById('modal-repo-updated').innerText = `Last Updated: ${updateDate}`;
+    
     document.getElementById('modal-repo-link').href = repo.html_url;
     
     document.getElementById('repo-modal').classList.remove('hidden');
@@ -54,7 +62,7 @@ function showRepoDetails(repo) {
 // Global exposure
 window.fetchGitHubProfile = fetchGitHubProfile;
 
-// Close modal logic
+// Close modal logic (Mouse Click)
 document.getElementById('close-btn').addEventListener('click', () => {
     document.getElementById('repo-modal').classList.add('hidden');
 });
