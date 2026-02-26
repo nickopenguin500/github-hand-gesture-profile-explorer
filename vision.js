@@ -18,6 +18,7 @@ hands.setOptions({
 
 // The loop that processes every webcam frame
 hands.onResults((results) => {
+    console.log("AI is running...", results.multiHandLandmarks);
     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
         const landmarks = results.multiHandLandmarks[0];
         
