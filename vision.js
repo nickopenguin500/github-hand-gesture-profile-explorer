@@ -57,11 +57,37 @@ hands.onResults((results) => {
 });
 
 // Turn on the webcam
-const camera = new Camera(videoElement, {
-    onFrame: async () => {
+// --- THE NEW NATIVE CAMERA LOGIC ---
+// This replaces the buggy MediaPipe Camera utility.
+
+async function processVideo() {
+    // SECURITY CHECK: Only send the frame to the AI if the video is fully loaded and playing.
+    // readyState 2 or higher means the browser has enough data to render the frame.
+    if (videoElement.readyState >= 2 && !videoElement.paused) { 
         await hands.send({image: videoElement});
-    },
-    width: 640,
-    height: 480
-});
-camera.start();
+    }
+    
+    // Loop this function continuously (like onStep in Python cmu_graphics)
+    requestAnimationFrame(processVideo);
+}
+
+async function startCamera() {
+    try {
+        // Ask the browser for the webcam
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+            video: { width: 640, height: 480 } 
+        });
+        videoElement.srcObject = stream;
+        
+        // Wait until the video metadata is loaded, THEN play and start the AI
+        videoElement.onloadedmetadata = () => {
+            videoElement.play();
+            processVideo(); // Kick off the AI loop
+        };
+    } catch (err) {
+        console.error("Camera access denied or failed:", err);
+    }
+}
+
+// Start the whole process
+startCamera();
