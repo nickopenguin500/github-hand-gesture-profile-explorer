@@ -143,3 +143,21 @@ input, button {
     cursor: pointer;
     margin-bottom: 20px;
 }
+
+/* Styling for the tech stack tags */
+.topics-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 15px 0;
+}
+
+.topic-tag {
+    background: #238636;
+    color: #ffffff;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: lowercase;
+}
