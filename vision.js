@@ -71,23 +71,36 @@ async function processVideo() {
     requestAnimationFrame(processVideo);
 }
 
+async function processVideo() {
+    if (videoElement.readyState >= 2 && !videoElement.paused) { 
+        try {
+            await hands.send({image: videoElement});
+        } catch (e) {
+            console.warn("AI busy, skipping frame...");
+        }
+    }
+    requestAnimationFrame(processVideo);
+}
+
 async function startCamera() {
     try {
-        // Ask the browser for the webcam
         const stream = await navigator.mediaDevices.getUserMedia({ 
             video: { width: 640, height: 480 } 
         });
         videoElement.srcObject = stream;
         
-        // Wait until the video metadata is loaded, THEN play and start the AI
         videoElement.onloadedmetadata = () => {
             videoElement.play();
-            processVideo(); // Kick off the AI loop
+            // ADDED: Wait 2 seconds for the ML model to "warm up" before sending frames
+            console.log("Waiting for AI warm-up...");
+            setTimeout(() => {
+                console.log("AI starting now!");
+                processVideo();
+            }, 2000); 
         };
     } catch (err) {
-        console.error("Camera access denied or failed:", err);
+        console.error("Camera failed:", err);
     }
 }
 
-// Start the whole process
 startCamera();

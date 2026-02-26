@@ -1,3 +1,4 @@
+window.fetchGitHubProfile = fetchGitHubProfile;
 async function fetchGitHubProfile(username) {
     const errorText = document.getElementById('error-message');
     const profileCard = document.getElementById('profile-card');
