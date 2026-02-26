@@ -1,30 +1,44 @@
-document.addEventListener('hand-pinch', (event) => {
-    const pinchX = event.detail.x;
-    const pinchY = event.detail.y;
+const searchBtn = document.getElementById('search-btn');
+const usernameInput = document.getElementById('username-input');
+const closeBtn = document.getElementById('close-btn');
 
-    // 1. Check the Search Button
-    checkCollision(document.getElementById('search-btn'), () => {
-        const username = document.getElementById('username-input').value.trim();
-        if (username) fetchGitHubProfile(username);
-    }, pinchX, pinchY);
-
-    // 2. Check the "Back" Button (if modal is open)
-    checkCollision(document.getElementById('close-btn'), () => {
-        document.getElementById('repo-modal').classList.add('hidden');
-    }, pinchX, pinchY);
-
-    // 3. Check every Repo Card
-    const cards = document.querySelectorAll('.repo-card');
-    cards.forEach(card => {
-        checkCollision(card, () => card.click(), pinchX, pinchY);
-    });
+// Standard Mouse Click (for basic testing)
+searchBtn.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username) fetchGitHubProfile(username);
 });
 
-// Helper function to keep code clean
-function checkCollision(element, action, x, y) {
-    if (element.classList.contains('hidden')) return;
-    const rect = element.getBoundingClientRect();
-    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
-        action();
+// Gesture Control Loop
+document.addEventListener('hand-pinch', (event) => {
+    // 1. Get the X and Y coordinates of your pinched fingers
+    const px = event.detail.x;
+    const py = event.detail.y;
+
+    // 2. Search Button Collision Check
+    const searchRect = searchBtn.getBoundingClientRect();
+    if (px >= searchRect.left && px <= searchRect.right && py >= searchRect.top && py <= searchRect.bottom) {
+        const username = usernameInput.value.trim();
+        if (username) fetchGitHubProfile(username);
     }
-}
+
+    // 3. Back Button Collision Check (Only works if the modal is currently visible)
+    const modal = document.getElementById('repo-modal');
+    if (!modal.classList.contains('hidden')) {
+        const closeRect = closeBtn.getBoundingClientRect();
+        if (px >= closeRect.left && px <= closeRect.right && py >= closeRect.top && py <= closeRect.bottom) {
+            modal.classList.add('hidden');
+        }
+    }
+
+    // 4. Repository Cards Collision Check
+    // We get a list of all current cards on the screen
+    const cards = document.querySelectorAll('.repo-card');
+    cards.forEach(card => {
+        const cardRect = card.getBoundingClientRect();
+        // The mathematical check: Is the point inside the rectangle?
+        if (px >= cardRect.left && px <= cardRect.right && py >= cardRect.top && py <= cardRect.bottom) {
+            // If yes, trigger a virtual 'click' on that card to open the modal
+            card.click();
+        }
+    });
+});

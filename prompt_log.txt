@@ -12,3 +12,9 @@ Cannot set properties of null (setting 'innerText')
 8. still getting these errors [pasted errors]
 9. im getting thousands of AI busy skipping frame
 10. ok now is there a way to make it so when you click on a profile's recent project, we see details of what language they use etc.? or just when we click on a profile in general
+11. ok now when i visit the site, it starts on the "Back to lIst" screen and i cant click out
+12. the back to list button doesnt work, and that layer hides the blue dot. also, the details about the projects is very short, and there seem to be useless emojis
+13. is there any way to display more details about the github projects?
+14. ok lets just stick with js then. ive only spent 1.5 hours so far, so we have a time to add a lot more. any suggestions? i still feel like there should be more details shown for the projects.
+15. wait wdym bottom half of github.js, where specifically
+16. 
