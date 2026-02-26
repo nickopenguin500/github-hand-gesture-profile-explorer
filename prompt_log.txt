@@ -1,4 +1,4 @@
-Model: Gemini Pro
+Model: Gemini Pro/thinking
 
 Prompt Log:
 1. Lets do the github idea, guide me through step by step what to do, including what files to create. we'll implement this through github pages.
@@ -6,3 +6,9 @@ Prompt Log:
 3. wait you gave me vision.js earlier, give me all the code again, im not sure what you remember and what you dont
 4. wait my stuff is saved thru github, can i just turn on pages and test it online
 5. it asked for camera but it doesnt seem to be tracking my finger. also theres nothing to explore when looking at a profile
+6. no i dont think anything changed. also i get this error when i search now
+Cannot set properties of null (setting 'innerText')
+7. the dot still isnt moving
+8. still getting these errors [pasted errors]
+9. im getting thousands of AI busy skipping frame
+10. ok now is there a way to make it so when you click on a profile's recent project, we see details of what language they use etc.? or just when we click on a profile in general

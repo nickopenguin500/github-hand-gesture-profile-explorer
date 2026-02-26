@@ -99,3 +99,42 @@ input, button {
     font-size: 13px;
     color: #8b949e;
 }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: #161b22;
+    padding: 40px;
+    border-radius: 12px;
+    border: 1px solid #58a6ff;
+    max-width: 600px;
+    width: 90%;
+}
+
+.modal-stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+    font-weight: bold;
+    color: #58a6ff;
+}
+
+#close-btn {
+    background: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 8px 15px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
