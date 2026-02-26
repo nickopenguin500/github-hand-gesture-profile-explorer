@@ -60,3 +60,42 @@ input, button {
     background-color: #3fb950 !important;
     transform: scale(0.6);
 }
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#repo-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    text-align: left;
+}
+
+.repo-card {
+    background: #0d1117;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    transition: transform 0.2s;
+}
+
+/* We will use this later for the pinch-to-expand mechanic */
+.repo-card:hover {
+    transform: scale(1.05);
+    border-color: #58a6ff;
+}
+
+.repo-card h4 {
+    margin: 0 0 5px 0;
+    color: #58a6ff;
+}
+
+.repo-card p {
+    font-size: 13px;
+    color: #8b949e;
+}

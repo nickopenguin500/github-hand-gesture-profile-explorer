@@ -1,27 +1,41 @@
 async function fetchGitHubProfile(username) {
     const errorText = document.getElementById('error-message');
     const profileCard = document.getElementById('profile-card');
+    const repoList = document.getElementById('repo-list'); 
 
     try {
-        errorText.classList.add('hidden'); // Hide old errors
+        errorText.classList.add('hidden'); 
         
-        const response = await fetch(`https://api.github.com/users/${username}`);
-        
-        if (!response.ok) {
-            if (response.status === 404) throw new Error("User not found.");
-            if (response.status === 403) throw new Error("API rate limit exceeded.");
-            throw new Error("Something went wrong with the API.");
+        // 1. Fetch the Profile
+        const profileRes = await fetch(`https://api.github.com/users/${username}`);
+        if (!profileRes.ok) {
+            if (profileRes.status === 404) throw new Error("User not found.");
+            throw new Error("API Limit Reached or Network Error.");
         }
+        const profileData = await profileRes.json();
 
-        const data = await response.json();
+        // 2. Fetch the Repositories
+        const reposRes = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=4`);
+        const reposData = await reposRes.json();
 
-        // Update the DOM with the fetched data
-        document.getElementById('avatar').src = data.avatar_url;
-        document.getElementById('name').innerText = data.name || data.login;
-        document.getElementById('bio').innerText = data.bio || "No bio available.";
-        document.getElementById('repos').innerText = data.public_repos;
+        // Update the Profile info
+        document.getElementById('avatar').src = profileData.avatar_url;
+        document.getElementById('name').innerText = profileData.name || profileData.login;
+        document.getElementById('bio').innerText = profileData.bio || "No bio available.";
+        
+        // Build the Repository Cards
+        repoList.innerHTML = ""; // Clear old searches
+        reposData.forEach(repo => {
+            repoList.innerHTML += `
+                <div class="repo-card">
+                    <h4>${repo.name}</h4>
+                    <p>${repo.description || "No description provided."}</p>
+                    <small>💻 ${repo.language || "Mixed"}</small>
+                </div>
+            `;
+        });
 
-        profileCard.classList.remove('hidden'); // Show the card
+        profileCard.classList.remove('hidden'); 
 
     } catch (error) {
         profileCard.classList.add('hidden');
