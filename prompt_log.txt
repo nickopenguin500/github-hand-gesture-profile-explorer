@@ -17,4 +17,5 @@ Cannot set properties of null (setting 'innerText')
 13. is there any way to display more details about the github projects?
 14. ok lets just stick with js then. ive only spent 1.5 hours so far, so we have a time to add a lot more. any suggestions? i still feel like there should be more details shown for the projects.
 15. wait wdym bottom half of github.js, where specifically
-16. 
+16. i think the back to list button is broken again. so is the view repository on github button
+17. 

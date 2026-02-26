@@ -127,7 +127,3 @@ async function showRepoDetails(repo) {
 
 // --- 4. EXPORTS AND EVENT LISTENERS ---
 window.fetchGitHubProfile = fetchGitHubProfile;
-
-document.getElementById('close-btn').addEventListener('click', () => {
-    document.getElementById('repo-modal').classList.add('hidden');
-});

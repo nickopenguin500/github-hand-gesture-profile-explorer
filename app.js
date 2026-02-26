@@ -1,44 +1,62 @@
 const searchBtn = document.getElementById('search-btn');
 const usernameInput = document.getElementById('username-input');
 const closeBtn = document.getElementById('close-btn');
+const repoLink = document.getElementById('modal-repo-link');
+const modal = document.getElementById('repo-modal');
 
-// Standard Mouse Click (for basic testing)
+// --- 1. MOUSE CONTROLS (For Testing) ---
 searchBtn.addEventListener('click', () => {
     const username = usernameInput.value.trim();
     if (username) fetchGitHubProfile(username);
 });
 
-// Gesture Control Loop
+closeBtn.addEventListener('click', () => {
+    modal.classList.add('hidden');
+});
+
+// --- 2. WEBCAM GESTURE CONTROLS ---
 document.addEventListener('hand-pinch', (event) => {
-    // 1. Get the X and Y coordinates of your pinched fingers
     const px = event.detail.x;
     const py = event.detail.y;
 
-    // 2. Search Button Collision Check
-    const searchRect = searchBtn.getBoundingClientRect();
-    if (px >= searchRect.left && px <= searchRect.right && py >= searchRect.top && py <= searchRect.bottom) {
-        const username = usernameInput.value.trim();
-        if (username) fetchGitHubProfile(username);
-    }
+    // Check if the screen is currently dimmed by the modal
+    const isModalOpen = !modal.classList.contains('hidden');
 
-    // 3. Back Button Collision Check (Only works if the modal is currently visible)
-    const modal = document.getElementById('repo-modal');
-    if (!modal.classList.contains('hidden')) {
+    if (isModalOpen) {
+        // SCENARIO A: MODAL IS OPEN
+        
+        // 1. Back Button Collision Check
         const closeRect = closeBtn.getBoundingClientRect();
         if (px >= closeRect.left && px <= closeRect.right && py >= closeRect.top && py <= closeRect.bottom) {
             modal.classList.add('hidden');
+            return; // Stop checking anything else
         }
-    }
 
-    // 4. Repository Cards Collision Check
-    // We get a list of all current cards on the screen
-    const cards = document.querySelectorAll('.repo-card');
-    cards.forEach(card => {
-        const cardRect = card.getBoundingClientRect();
-        // The mathematical check: Is the point inside the rectangle?
-        if (px >= cardRect.left && px <= cardRect.right && py >= cardRect.top && py <= cardRect.bottom) {
-            // If yes, trigger a virtual 'click' on that card to open the modal
-            card.click();
+        // 2. View on GitHub Link Collision Check
+        const linkRect = repoLink.getBoundingClientRect();
+        if (px >= linkRect.left && px <= linkRect.right && py >= linkRect.top && py <= linkRect.bottom) {
+            repoLink.click(); // Triggers the link to open in a new tab
+            return;
         }
-    });
+
+    } else {
+        // SCENARIO B: DASHBOARD IS OPEN
+        
+        // 3. Search Button Collision Check
+        const searchRect = searchBtn.getBoundingClientRect();
+        if (px >= searchRect.left && px <= searchRect.right && py >= searchRect.top && py <= searchRect.bottom) {
+            const username = usernameInput.value.trim();
+            if (username) fetchGitHubProfile(username);
+            return;
+        }
+
+        // 4. Repository Cards Collision Check
+        const cards = document.querySelectorAll('.repo-card');
+        cards.forEach(card => {
+            const cardRect = card.getBoundingClientRect();
+            if (px >= cardRect.left && px <= cardRect.right && py >= cardRect.top && py <= cardRect.bottom) {
+                card.click();
+            }
+        });
+    }
 });

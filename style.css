@@ -228,3 +228,18 @@ input, button {
     color: #8b949e;
     margin: 0;
 }
+
+#modal-repo-link {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #238636; /* GitHub green */
+    color: #ffffff !important;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+#modal-repo-link:hover {
+    transform: scale(1.05);
+}
