@@ -44,13 +44,30 @@ function showRepoDetails(repo) {
     document.getElementById('modal-repo-name').innerText = repo.name;
     document.getElementById('modal-repo-desc').innerText = repo.description || "No detailed description provided by the author.";
     
-    // Richer data points (No emojis)
+    // --- NEW: Process Topics (Tags) ---
+    const topicsContainer = document.getElementById('repo-topics');
+    topicsContainer.innerHTML = ''; // Clear old tags
+    if (repo.topics && repo.topics.length > 0) {
+        repo.topics.forEach(topic => {
+            topicsContainer.innerHTML += `<span class="topic-tag">${topic}</span>`;
+        });
+    }
+
+    // --- NEW: Process License and Size ---
+    const licenseName = repo.license ? repo.license.name : 'No License specified';
+    
+    // Convert size from KB to a readable format
+    const sizeKB = repo.size;
+    const sizeText = sizeKB > 1024 ? `${(sizeKB / 1024).toFixed(2)} MB` : `${sizeKB} KB`;
+
+    // Inject the stats
     document.getElementById('modal-repo-lang').innerHTML = `Language: <span>${repo.language || 'N/A'}</span>`;
     document.getElementById('modal-repo-stars').innerHTML = `Stars: <span>${repo.stargazers_count}</span>`;
     document.getElementById('modal-repo-forks').innerHTML = `Forks: <span>${repo.forks_count}</span>`;
     document.getElementById('modal-repo-issues').innerHTML = `Open Issues: <span>${repo.open_issues_count}</span>`;
+    document.getElementById('modal-repo-license').innerHTML = `License: <span>${licenseName}</span>`;
+    document.getElementById('modal-repo-size').innerHTML = `Size: <span>${sizeText}</span>`;
     
-    // Format the date nicely
     const updateDate = new Date(repo.updated_at).toLocaleDateString();
     document.getElementById('modal-repo-updated').innerText = `Last Updated: ${updateDate}`;
     
