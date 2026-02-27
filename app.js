@@ -146,16 +146,12 @@ document.addEventListener('pinch-zoom', (event) => {
 document.addEventListener('hand-scroll', (event) => {
     const scrollSensitivity = -2.5; 
     
-    // Grab the modal elements
     const modal = document.getElementById('repo-modal');
-    const modalContent = document.querySelector('.modal-content');
-    
-    // Check if the modal is currently open and visible
     const isModalOpen = modal && !modal.classList.contains('hidden');
     
     if (isModalOpen) {
-        // SCROLL THE MODAL
-        modalContent.scrollBy({
+        // SCROLL THE DARK OVERLAY INSTEAD OF THE CONTENT BOX
+        modal.scrollBy({
             left: event.detail.dx * scrollSensitivity,
             top: event.detail.dy * scrollSensitivity,
             behavior: 'auto' 

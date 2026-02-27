@@ -104,13 +104,17 @@ input, button {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.9);
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* 1. Start from the top so it scales downwards properly */
+    align-items: flex-start; 
     z-index: 2000;
+    /* 2. Move the scrollbar to this dark background */
+    overflow: auto; 
+    padding: 50px 0; 
 }
 
 .modal-content {
@@ -118,10 +122,10 @@ input, button {
     padding: 40px;
     border-radius: 12px;
     border: 1px solid #58a6ff;
-    max-width: 600px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto; 
+    /* 3. Give it a rigid width so it acts like a magnifying glass and never squishes */
+    width: 600px; 
+    margin: auto;
+    /* Note: max-height, max-width, and overflow-y have been completely removed! */
 }
 
 .modal-stats {
