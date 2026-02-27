@@ -6,8 +6,10 @@ document.addEventListener('click', (event) => {
             fetchGitHubProfile(usernameInput.value.trim());
         }
     } else if (event.target.id === 'scan-btn') {
-        // Trigger the new OCR process
         startOcrProcess();
+    } else if (event.target.id === 'repo-modal') {
+        // NEW: Close modal if you click the dark background
+        closeModal();
     }
 });
 
@@ -24,6 +26,19 @@ document.addEventListener('hand-pinch', (event) => {
         const repoCard = elementUnderPinch.closest('.repo-card');
         if (repoCard) {
             elementUnderPinch = repoCard;
+        }
+
+        // NEW: If they pinched the dark background, close the modal!
+        if (elementUnderPinch.id === 'repo-modal') {
+            closeModal();
+            return; 
+        }
+
+        // NEW: Forgive slight hit-box misalignments on the close button when zoomed
+        const closeBtn = elementUnderPinch.closest('#close-btn');
+        if (closeBtn) {
+            closeModal();
+            return;
         }
 
         elementUnderPinch.click(); 

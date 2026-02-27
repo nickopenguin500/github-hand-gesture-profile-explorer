@@ -1,4 +1,4 @@
-Model: Gemini Pro/thinking
+Model: Gemini Pro
 
 Prompt Log:
 1. Lets do the github idea, guide me through step by step what to do, including what files to create. we'll implement this through github pages.
@@ -30,4 +30,15 @@ Add a hand gesture, maybe all fingers extended out fully, that allows the user t
 23. great its working now, although i feel like it only works when mirrored camera is on, also, the camera size ratio seems wrong, as the border doesnt line up now
 24. great its working. now, implement option 2:
 Add a zoom in and zoom out hand gesture, lets do that both hand pinch option. how about, if both hands are pinching, then they move away from each other while pinching, then zoom in and vice versa.
-25. 
+25. the zoom effect isnt working on the camera, mirror button, or project details (from clicking on a project)
+26. everything is working, except the positions seem messed up. id like the zoom to be website-wide, such that everything moves together. right now, the mirror button and the camera stay in their set x, y, so zooming out makes everything further apart from each other
+27. great everythings working. now, implement step 3. heres a reminder of what you told me
+Open-Hand Panning and Scrolling
+Feasibility: 9/10
+How it works: This is very doable and extremely useful for navigating the repo list.  We would use MediaPipe's landmarks to detect an "Open Palm" state. We can determine a palm is open if the tips of all your fingers (landmarks 8, 12, 16, 20) are further away from your wrist (landmark 0) than your lower knuckles are. When the open palm is detected, we track the center of your hand and map its movement to window.scrollBy(dx, dy).
+The Catch: Human hands naturally shake. Direct 1:1 mapping of your hand's position to the scroll bar can make the screen jitter violently. We will need to write a simple "low-pass filter" (a smoothing function) to make the scrolling feel fluid and natural.
+28. it doesnt move the project description (after clicking on a project)
+29. the scroll bar when i zoom into the project details doesnt go far enough, so i cant use the newly added feature to see the whole thing after zooming in
+30. now the project details are scaling weirdly, i want it to stay constant other than the fact that were zooming in, just like any other website
+31. its still scaling when i zoom in far enough for the edges of the project details window to reach the edges of the screen. also, that issue with the scroll bar not being long enough is there again
+32. 
