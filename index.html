@@ -41,7 +41,36 @@
             <button id="mirror-btn">Mirror Camera: ON</button>
         </div>
 
+        <button id="help-btn" class="floating-btn">?</button>
+
         <video id="videoElement" width="640" height="360" autoplay playsinline muted style="border: 2px solid red; display: block; margin: 0 auto;"></video>
+    </div>
+
+    <div id="help-modal" class="modal hidden">
+        <div class="modal-content" style="text-align: left;">
+            <button id="close-help-btn" style="margin-bottom: 20px;">← Close Guide</button>
+            <h2 style="margin-top: 0; color: #58a6ff;">How to Use Gestures</h2>
+            
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #3fb950; margin-bottom: 5px;">🟢 Click & Select</h3>
+                <p style="margin: 0; color: #8b949e;">Pinch your index finger and thumb together with one hand to click buttons or select repositories. The cursor will turn green.</p>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #f0883e; margin-bottom: 5px;">🟠 Pan & Scroll</h3>
+                <p style="margin: 0; color: #8b949e;">Hold your hand completely open and flat (all fingers extended). The cursor will turn into an orange radar. Move your hand to scroll the page.</p>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <h3 style="color: #79c0ff; margin-bottom: 5px;">🔵 Zoom In & Out</h3>
+                <p style="margin: 0; color: #8b949e;">Pinch with <strong>both</strong> hands simultaneously. While holding the pinch, move your hands apart to zoom in, or closer together to zoom out.</p>
+            </div>
+
+            <div>
+                <h3 style="color: #c9d1d9; margin-bottom: 5px;">📸 Scan Username</h3>
+                <p style="margin: 0; color: #8b949e;">Pinch the "Scan Username" button. Hold a piece of paper with a valid username written clearly in dark marker up to the camera.</p>
+            </div>
+        </div>
     </div>
     <div id="scan-overlay" class="modal hidden">
         <div style="text-align: center;">

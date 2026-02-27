@@ -4,12 +4,23 @@ document.addEventListener('click', (event) => {
         const usernameInput = document.getElementById('username-input');
         if (usernameInput && usernameInput.value.trim()) {
             fetchGitHubProfile(usernameInput.value.trim());
+        }// --- 1. MOUSE & BUTTON CONTROLS ---
+document.addEventListener('click', (event) => {
+    if (event.target.id === 'search-btn') {
+        const usernameInput = document.getElementById('username-input');
+        if (usernameInput && usernameInput.value.trim()) {
+            fetchGitHubProfile(usernameInput.value.trim());
         }
     } else if (event.target.id === 'scan-btn') {
         startOcrProcess();
     } else if (event.target.id === 'repo-modal') {
-        // NEW: Close modal if you click the dark background
         closeModal();
+    } else if (event.target.id === 'help-btn') {
+        // OPEN HELP MODAL
+        document.getElementById('help-modal').classList.remove('hidden');
+    } else if (event.target.id === 'close-help-btn' || event.target.id === 'help-modal') {
+        // CLOSE HELP MODAL (Button or Background click)
+        document.getElementById('help-modal').classList.add('hidden');
     }
 });
 
@@ -28,13 +39,18 @@ document.addEventListener('hand-pinch', (event) => {
             elementUnderPinch = repoCard;
         }
 
-        // NEW: If they pinched the dark background, close the modal!
+        // Close Repo Modal on background pinch
         if (elementUnderPinch.id === 'repo-modal') {
             closeModal();
             return; 
         }
+        
+        // Close Help Modal on background pinch
+        if (elementUnderPinch.id === 'help-modal') {
+            document.getElementById('help-modal').classList.add('hidden');
+            return;
+        }
 
-        // NEW: Forgive slight hit-box misalignments on the close button when zoomed
         const closeBtn = elementUnderPinch.closest('#close-btn');
         if (closeBtn) {
             closeModal();
