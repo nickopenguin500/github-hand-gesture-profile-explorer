@@ -49,8 +49,8 @@ input, button {
     height: 20px;
     background-color: #58a6ff;
     border-radius: 50%;
-    position: absolute;
-    pointer-events: none; /* Lets clicks pass through the dot */
+    position: fixed; /* THE FIX: changed from absolute to fixed */
+    pointer-events: none; 
     z-index: 9999;
     transition: transform 0.1s;
 }
