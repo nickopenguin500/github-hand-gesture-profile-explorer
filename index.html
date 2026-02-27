@@ -8,6 +8,8 @@
     
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
 <body>
     <div id="cursor"></div>
@@ -17,6 +19,8 @@
         <div class="search-box">
             <input type="text" id="username-input" placeholder="Enter GitHub Username">
             <button id="search-btn">Search (Pinch Here!)</button>
+            
+            <button id="scan-btn">📷 Scan Username</button>
         </div>
 
         <div id="profile-card" class="hidden">
@@ -32,14 +36,22 @@
         
         <p id="error-message" class="error hidden"></p>
     </div>
+    
     <div style="margin: 20px auto;">
         <button id="mirror-btn">Mirror Camera: ON</button>
     </div>
 
     <video id="videoElement" width="320" height="240" autoplay playsinline muted style="border: 2px solid red; display: block; margin: 0 auto;"></video>
+    
+    <div id="scan-overlay" class="modal hidden">
+        <div style="text-align: center;">
+            <h1 id="countdown-text" style="font-size: 100px; color: #58a6ff; margin: 0;">3</h1>
+            <p id="scan-status" style="font-size: 24px; color: #c9d1d9;">Get your paper ready...</p>
+        </div>
+    </div>
+
     <script src="vision.js"></script>
     <script src="github.js"></script>
-    
     <script src="app.js"></script>
     
     <div id="repo-modal" class="modal hidden">

@@ -21,4 +21,9 @@ Cannot set properties of null (setting 'innerText')
 17. ok now pinching is just broken but the mouse works
 18. pinching is still broken, this is all i see in console [copy pasted error]
 19. ok pinching works now, is there any way to add a button to mirror the webcam and pinching camera, i believe most cameras are mirrored, so the movement may be inverted for the user
-20. 
+20. Here is my current code, it is fully functional right now. Tell me how feasible these ideas are, then we can implement them one by one.
+Allow the user to display text on a piece of paper or a whiteboard, have the camera read that text and check whether or not it is a valid github username. if it is, it goes to the username. (this allows the entire process to be hands-free)
+Add a zoom in and zoom out hand gesture, im thinking form a rectangle using both hands' pointer fingers and thumbs and either expand or contract that rectangle.
+Add a hand gesture, maybe all fingers extended out fully, that allows the user to move the screen around, like scrolling sideways and vertically
+21. Ok, implement the first option, lets do a button that the user can "click" (by pinching just like all the other buttons) which starts a countdown of 3 seconds. then, it reads the screen only once to check for any text
+22. 

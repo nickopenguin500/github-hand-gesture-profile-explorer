@@ -248,3 +248,21 @@ input, button {
 .mirrored {
     transform: scaleX(-1);
 }
+
+/* --- NEW OCR SCANNER STYLES --- */
+#scan-btn {
+    background-color: #238636;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+#scan-btn:hover {
+    background-color: #2ea043;
+}
+
+#scan-overlay {
+    flex-direction: column;
+}
