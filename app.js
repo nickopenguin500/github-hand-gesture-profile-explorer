@@ -30,6 +30,7 @@ document.addEventListener('hand-pinch', (event) => {
     }
 });
 
+
 // --- 3. OCR SCANNER LOGIC ---
 async function startOcrProcess() {
     const overlay = document.getElementById('scan-overlay');
@@ -38,52 +39,74 @@ async function startOcrProcess() {
     const videoElement = document.getElementById('videoElement');
     const errorText = document.getElementById('error-message');
     
-    // Reset and show the overlay
     errorText.classList.add('hidden');
     overlay.classList.remove('hidden');
     
     // Run the 3-second countdown
     for (let i = 3; i > 0; i--) {
         countdownText.innerText = i;
-        statusText.innerText = "Get your paper ready...";
+        statusText.innerText = "Hold paper steady and close to camera...";
         await new Promise(resolve => setTimeout(resolve, 1000));
     }
     
-    // Update UI to show it's "processing"
     countdownText.innerText = "📸";
-    statusText.innerText = "Scanning text... Keep still!";
-    
-    // Give the DOM a tiny fraction of a second to render the emoji
+    statusText.innerText = "Processing image...";
     await new Promise(resolve => setTimeout(resolve, 50));
 
-    // Create a hidden canvas to take a snapshot of the raw video feed
+    // Create canvas matching the new higher video resolution
     const canvas = document.createElement('canvas');
     canvas.width = videoElement.videoWidth;
     canvas.height = videoElement.videoHeight;
     const ctx = canvas.getContext('2d');
+    
+    // Draw the raw video frame
     ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
     
+    // --- NEW: IMAGE PRE-PROCESSING (Grayscale & High Contrast) ---
+    let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    let pixels = imgData.data;
+    
+    for (let i = 0; i < pixels.length; i += 4) {
+        let r = pixels[i];
+        let g = pixels[i+1];
+        let b = pixels[i+2];
+        
+        // Convert to grayscale
+        let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+        
+        // Binarize (Thresholding): If it's dark, make it pure black. If light, pure white.
+        // You can adjust the '100' threshold value if your room is darker/brighter.
+        let val = gray < 100 ? 0 : 255; 
+        
+        pixels[i] = val;     // Red
+        pixels[i+1] = val;   // Green
+        pixels[i+2] = val;   // Blue
+    }
+    ctx.putImageData(imgData, 0, 0);
+    // -------------------------------------------------------------
+
     try {
-        // Pass the snapshot to Tesseract to extract English text
+        // Pass the highly-contrasted image to Tesseract
         const result = await Tesseract.recognize(canvas, 'eng');
         
-        // Clean up the text. GitHub usernames only allow alphanumeric chars and hyphens.
-        const rawText = result.data.text.trim();
-        console.log("Raw text found by AI:", rawText);
+        // Log the full output so you can see exactly what it thought it saw
+        console.log("Full OCR Output:", result.data.text);
         
-        // Use a Regex to find the first continuous string that looks like a username
-        const match = rawText.match(/[a-zA-Z0-9-]+/);
+        // Clean up text and grab strings that are at least 3 characters long 
+        // to avoid grabbing random background noise like "A" or "I"
+        const rawText = result.data.text.trim();
+        const matches = rawText.match(/[a-zA-Z0-9-]{3,}/g); 
         
         overlay.classList.add('hidden');
         
-        if (match && match[0]) {
-            const username = match[0];
-            document.getElementById('username-input').value = username;
+        if (matches && matches.length > 0) {
+            // Pick the longest valid-looking string in case it reads background junk
+            let bestMatch = matches.sort((a, b) => b.length - a.length)[0];
             
-            // Automatically search for the scanned username!
-            fetchGitHubProfile(username);
+            document.getElementById('username-input').value = bestMatch;
+            fetchGitHubProfile(bestMatch);
         } else {
-            errorText.innerText = "Could not read a valid username from the camera. Please try again.";
+            errorText.innerText = "No clear username detected. Try writing larger/darker!";
             errorText.classList.remove('hidden');
         }
         
