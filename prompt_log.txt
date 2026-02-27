@@ -43,4 +43,6 @@ The Catch: Human hands naturally shake. Direct 1:1 mapping of your hand's positi
 31. its still scaling when i zoom in far enough for the edges of the project details window to reach the edges of the screen. also, that issue with the scroll bar not being long enough is there again
 32. sometimes after zooming in/messing around a bit, the cameras detection seems to shift upwards. like it no longer actually matches the camera, and i cant move my pointer finger to go any lower without moving it out of frame
 33. yes, please improve the graphics now
-34. 
+34. when i zoom in or out and press scan camera, it is always in some weird place not centered, could that specifically be fixed no matter the zoom?
+35. now can you add a help button that gives explanations of how to use each hand motion?
+36. clicking on the button doesnt do anything, i think theres an error in the html code
