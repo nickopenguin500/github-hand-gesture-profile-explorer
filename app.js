@@ -130,20 +130,14 @@ async function startOcrProcess() {
 
 // --- 4. ZOOM CONTROLS ---
 let currentZoom = 1.0;
-const uiContainer = document.querySelector('.container');
-
-// Add a slight transition so the zooming doesn't look jittery
-uiContainer.style.transition = 'transform 0.05s linear';
-uiContainer.style.transformOrigin = 'top center'; // Keeps it anchored to the top so it doesn't fly off screen
 
 document.addEventListener('pinch-zoom', (event) => {
-    // The delta is in pixels. Multiply by a small fraction so it doesn't zoom too violently
     const zoomSpeed = 0.003; 
     currentZoom += (event.detail.delta * zoomSpeed);
     
-    // Clamp the zoom so the user doesn't shrink the page to a microscopic speck or blow it up indefinitely
+    // Clamp the zoom so it doesn't get too crazy
     currentZoom = Math.max(0.5, Math.min(currentZoom, 2.5));
     
-    // Apply the CSS scale!
-    uiContainer.style.transform = `scale(${currentZoom})`;
+    // Inject the new zoom level into our CSS variable!
+    document.documentElement.style.setProperty('--ui-zoom', currentZoom);
 });

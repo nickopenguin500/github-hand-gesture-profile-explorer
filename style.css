@@ -244,9 +244,34 @@ input, button {
     transform: scale(1.05);
 }
 
-/* Add this to the bottom of style.css */
-.mirrored {
-    transform: scaleX(-1);
+/* --- NEW GLOBAL ZOOM & MIRROR STYLES --- */
+:root {
+    --ui-zoom: 1; /* This is our master zoom variable */
+}
+
+/* Apply zoom and a smooth transition to all independent UI blocks */
+.container, 
+#mirror-wrapper, 
+.modal-content, 
+#scan-overlay > div {
+    transform: scale(var(--ui-zoom));
+    transition: transform 0.05s linear;
+}
+
+/* Make sure the main container scales from the top so it doesn't push off-screen */
+.container {
+    transform-origin: top center;
+}
+
+/* The video element gets special rules so Zoom and Mirror don't fight */
+#videoElement {
+    transform: scale(var(--ui-zoom));
+    transition: transform 0.05s linear;
+}
+
+#videoElement.mirrored {
+    /* Flips horizontally AND applies the current zoom level simultaneously */
+    transform: scaleX(calc(-1 * var(--ui-zoom))) scaleY(var(--ui-zoom));
 }
 
 /* --- NEW OCR SCANNER STYLES --- */
