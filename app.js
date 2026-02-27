@@ -144,13 +144,28 @@ document.addEventListener('pinch-zoom', (event) => {
 
 // --- 5. SCROLL CONTROLS ---
 document.addEventListener('hand-scroll', (event) => {
-    // Multiplier controls speed. Negative values create a natural "drag" effect 
-    // (e.g., pulling your hand down pulls the page down)
     const scrollSensitivity = -2.5; 
     
-    window.scrollBy({
-        left: event.detail.dx * scrollSensitivity,
-        top: event.detail.dy * scrollSensitivity,
-        behavior: 'auto' // Use 'auto' instead of 'smooth' to prevent rendering lag
-    });
+    // Grab the modal elements
+    const modal = document.getElementById('repo-modal');
+    const modalContent = document.querySelector('.modal-content');
+    
+    // Check if the modal is currently open and visible
+    const isModalOpen = modal && !modal.classList.contains('hidden');
+    
+    if (isModalOpen) {
+        // SCROLL THE MODAL
+        modalContent.scrollBy({
+            left: event.detail.dx * scrollSensitivity,
+            top: event.detail.dy * scrollSensitivity,
+            behavior: 'auto' 
+        });
+    } else {
+        // SCROLL THE MAIN WEBSITE
+        window.scrollBy({
+            left: event.detail.dx * scrollSensitivity,
+            top: event.detail.dy * scrollSensitivity,
+            behavior: 'auto' 
+        });
+    }
 });

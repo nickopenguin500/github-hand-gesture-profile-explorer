@@ -120,6 +120,10 @@ input, button {
     border: 1px solid #58a6ff;
     max-width: 600px;
     width: 90%;
+    
+    /* --- ADD THESE TWO NEW LINES --- */
+    max-height: 80vh;  /* Prevents it from being taller than 80% of the screen */
+    overflow-y: auto;  /* Turns on internal scrolling */
 }
 
 .modal-stats {
