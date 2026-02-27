@@ -118,12 +118,13 @@ input, button {
     padding: 40px;
     border-radius: 12px;
     border: 1px solid #58a6ff;
-    max-width: 600px;
-    width: 90%;
     
-    /* --- ADD THESE TWO NEW LINES --- */
-    max-height: 80vh;  /* Prevents it from being taller than 80% of the screen */
-    overflow-y: auto;  /* Turns on internal scrolling */
+    /* THE FIX: Divide the layout boundaries by the zoom variable */
+    width: calc(90% / var(--ui-zoom));
+    max-width: calc(600px / var(--ui-zoom));
+    max-height: calc(80vh / var(--ui-zoom));
+    
+    overflow-y: auto; 
 }
 
 .modal-stats {
