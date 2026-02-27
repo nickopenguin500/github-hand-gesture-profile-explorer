@@ -26,4 +26,6 @@ Allow the user to display text on a piece of paper or a whiteboard, have the cam
 Add a zoom in and zoom out hand gesture, im thinking form a rectangle using both hands' pointer fingers and thumbs and either expand or contract that rectangle.
 Add a hand gesture, maybe all fingers extended out fully, that allows the user to move the screen around, like scrolling sideways and vertically
 21. Ok, implement the first option, lets do a button that the user can "click" (by pinching just like all the other buttons) which starts a countdown of 3 seconds. then, it reads the screen only once to check for any text
-22. 
+22. it doesnt seem to be working too well, it only detects like 1 character and its usually the wrong character
+23. great its working now, although i feel like it only works when mirrored camera is on, also, the camera size ratio seems wrong, as the border doesnt line up now
+24. 

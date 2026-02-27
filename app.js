@@ -59,8 +59,18 @@ async function startOcrProcess() {
     canvas.height = videoElement.videoHeight;
     const ctx = canvas.getContext('2d');
     
+    // --- NEW: MATCH THE VISUAL MIRROR STATE ---
+    // If the camera is mirrored on screen, flip the canvas so Tesseract sees exactly what you see
+    if (videoElement.classList.contains('mirrored')) {
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+    }
+
     // Draw the raw video frame
     ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+    // Reset the transform before doing our high-contrast pixel manipulation
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     
     // --- NEW: IMAGE PRE-PROCESSING (Grayscale & High Contrast) ---
     let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
