@@ -118,12 +118,9 @@ input, button {
     padding: 40px;
     border-radius: 12px;
     border: 1px solid #58a6ff;
-    
-    /* THE FIX: Divide the layout boundaries by the zoom variable */
-    width: calc(90% / var(--ui-zoom));
-    max-width: calc(600px / var(--ui-zoom));
-    max-height: calc(80vh / var(--ui-zoom));
-    
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
     overflow-y: auto; 
 }
 
@@ -254,22 +251,14 @@ input, button {
     --ui-zoom: 1; /* Master zoom variable */
 }
 
-/* Scale the wrapper that holds the website content */
-#zoom-wrapper {
-    transform: scale(var(--ui-zoom));
-    transform-origin: top center;
-    transition: transform 0.05s linear;
-    width: 100%; 
-}
-
-/* Scale popups inside their full-screen dark backgrounds */
+/* Using CSS 'zoom' instead of 'transform' keeps the layout identical while scaling everything perfectly */
+#zoom-wrapper, 
 .modal-content, 
 #scan-overlay > div {
-    transform: scale(var(--ui-zoom));
-    transition: transform 0.05s linear;
+    zoom: var(--ui-zoom);
 }
 
-/* The wrapper handles zoom, so the video just needs to flip */
+/* The video just needs to flip */
 #videoElement.mirrored {
     transform: scaleX(-1);
 }
