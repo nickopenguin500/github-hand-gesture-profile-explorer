@@ -304,11 +304,16 @@ input, button {
     --ui-zoom: 1; /* Master zoom variable */
 }
 
-/* Using CSS 'zoom' instead of 'transform' keeps the layout identical while scaling everything perfectly */
+/* We removed the scan-overlay from this list so it ignores the zoom! */
 #zoom-wrapper, 
-.modal-content, 
-#scan-overlay > div {
+.modal-content {
     zoom: var(--ui-zoom);
+}
+
+/* Force the countdown to stay dead-center on the monitor */
+#scan-overlay {
+    align-items: center;
+    padding: 0;
 }
 
 /* The video just needs to flip */
