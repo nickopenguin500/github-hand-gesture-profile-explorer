@@ -28,4 +28,6 @@ Add a hand gesture, maybe all fingers extended out fully, that allows the user t
 21. Ok, implement the first option, lets do a button that the user can "click" (by pinching just like all the other buttons) which starts a countdown of 3 seconds. then, it reads the screen only once to check for any text
 22. it doesnt seem to be working too well, it only detects like 1 character and its usually the wrong character
 23. great its working now, although i feel like it only works when mirrored camera is on, also, the camera size ratio seems wrong, as the border doesnt line up now
-24. 
+24. great its working. now, implement option 2:
+Add a zoom in and zoom out hand gesture, lets do that both hand pinch option. how about, if both hands are pinching, then they move away from each other while pinching, then zoom in and vice versa.
+25. 
