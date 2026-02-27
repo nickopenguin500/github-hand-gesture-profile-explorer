@@ -141,3 +141,16 @@ document.addEventListener('pinch-zoom', (event) => {
     // Inject the new zoom level into our CSS variable!
     document.documentElement.style.setProperty('--ui-zoom', currentZoom);
 });
+
+// --- 5. SCROLL CONTROLS ---
+document.addEventListener('hand-scroll', (event) => {
+    // Multiplier controls speed. Negative values create a natural "drag" effect 
+    // (e.g., pulling your hand down pulls the page down)
+    const scrollSensitivity = -2.5; 
+    
+    window.scrollBy({
+        left: event.detail.dx * scrollSensitivity,
+        top: event.detail.dy * scrollSensitivity,
+        behavior: 'auto' // Use 'auto' instead of 'smooth' to prevent rendering lag
+    });
+});
