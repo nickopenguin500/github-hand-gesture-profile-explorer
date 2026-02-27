@@ -44,21 +44,70 @@ input, button {
 }
 
 /* The Hand Cursor */
+/* --- HUD CURSOR GRAPHICS --- */
 #cursor {
-    width: 20px;
-    height: 20px;
-    background-color: #58a6ff;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #58a6ff;
     border-radius: 50%;
-    position: fixed; /* THE FIX: changed from absolute to fixed */
+    position: fixed; 
     pointer-events: none; 
     z-index: 9999;
-    transition: transform 0.1s;
+    /* This perfectly centers the ring on the tip of your index finger */
+    transform: translate(-50%, -50%); 
+    transition: width 0.15s, height 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+    background-color: transparent;
 }
 
-/* When the user pinches, the cursor turns green and shrinks */
-.pinching {
-    background-color: #3fb950 !important;
-    transform: scale(0.6);
+/* Inner crosshair dot */
+#cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: #58a6ff;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s;
+}
+
+/* State 1: Pinching (Green Lock-on) */
+#cursor.pinching {
+    width: 20px;
+    height: 20px;
+    border-color: #3fb950;
+    box-shadow: 0 0 15px rgba(63, 185, 80, 0.8);
+    background-color: rgba(63, 185, 80, 0.2);
+}
+#cursor.pinching::after {
+    background-color: #3fb950;
+    width: 8px;
+    height: 8px;
+}
+
+/* State 2: Open Palm Scrolling (Orange Radar) */
+#cursor.scrolling {
+    width: 50px;
+    height: 50px;
+    border-color: #f0883e;
+    border-style: dashed;
+    box-shadow: 0 0 20px rgba(240, 136, 62, 0.6);
+    background-color: rgba(240, 136, 62, 0.1);
+    /* Spin the dashed border continuously */
+    animation: hud-spin 4s linear infinite;
+}
+#cursor.scrolling::after {
+    background-color: #f0883e;
+    width: 6px;
+    height: 6px;
+}
+
+@keyframes hud-spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 .profile-header {

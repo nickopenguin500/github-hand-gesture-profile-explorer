@@ -41,4 +41,6 @@ The Catch: Human hands naturally shake. Direct 1:1 mapping of your hand's positi
 29. the scroll bar when i zoom into the project details doesnt go far enough, so i cant use the newly added feature to see the whole thing after zooming in
 30. now the project details are scaling weirdly, i want it to stay constant other than the fact that were zooming in, just like any other website
 31. its still scaling when i zoom in far enough for the edges of the project details window to reach the edges of the screen. also, that issue with the scroll bar not being long enough is there again
-32. 
+32. sometimes after zooming in/messing around a bit, the cameras detection seems to shift upwards. like it no longer actually matches the camera, and i cant move my pointer finger to go any lower without moving it out of frame
+33. yes, please improve the graphics now
+34. 

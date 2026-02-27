@@ -148,14 +148,12 @@ hands.onResults((results) => {
                     lastPalmX = currentPalmX;
                     lastPalmY = currentPalmY;
                     
-                    // Visual feedback: Orange and bigger when scrolling!
-                    cursor.style.backgroundColor = '#f0883e'; 
-                    cursor.style.transform = 'scale(1.5)';
+                    // Activate HUD Radar State
+                    cursor.classList.add('scrolling');
                 } else {
                     lastPalmX = null;
                     lastPalmY = null;
-                    cursor.style.backgroundColor = ''; 
-                    cursor.style.transform = '';
+                    cursor.classList.remove('scrolling');
                 }
             }
         }
@@ -167,8 +165,7 @@ hands.onResults((results) => {
             isPinching = false;
             cursor.classList.remove('pinching');
         }
-        cursor.style.backgroundColor = '';
-        cursor.style.transform = '';
+        cursor.classList.remove('scrolling');
     }
 });
 
