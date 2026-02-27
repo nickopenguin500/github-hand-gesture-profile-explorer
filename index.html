@@ -14,34 +14,35 @@
 <body>
     <div id="cursor"></div>
 
-    <div class="container">
-        <h1>GitHub Explorer</h1>
-        <div class="search-box">
-            <input type="text" id="username-input" placeholder="Enter GitHub Username">
-            <button id="search-btn">Search (Pinch Here!)</button>
-            
-            <button id="scan-btn">📷 Scan Username</button>
-        </div>
-
-        <div id="profile-card" class="hidden">
-            <div class="profile-header">
-                <img id="avatar" src="" alt="Profile Picture">
-                <div>
-                    <h2 id="name"></h2>
-                    <p id="bio"></p>
-                </div>
+    <div id="zoom-wrapper">
+        <div class="container">
+            <h1>GitHub Explorer</h1>
+            <div class="search-box">
+                <input type="text" id="username-input" placeholder="Enter GitHub Username">
+                <button id="search-btn">Search (Pinch Here!)</button>
+                <button id="scan-btn">📷 Scan Username</button>
             </div>
-            <div id="repo-list"></div>
+
+            <div id="profile-card" class="hidden">
+                <div class="profile-header">
+                    <img id="avatar" src="" alt="Profile Picture">
+                    <div>
+                        <h2 id="name"></h2>
+                        <p id="bio"></p>
+                    </div>
+                </div>
+                <div id="repo-list"></div>
+            </div>
+            
+            <p id="error-message" class="error hidden"></p>
         </div>
         
-        <p id="error-message" class="error hidden"></p>
-    </div>
-    
-    <div id="mirror-wrapper" style="margin: 20px auto;">
-        <button id="mirror-btn">Mirror Camera: ON</button>
-    </div>
+        <div id="mirror-wrapper" style="margin: 20px auto;">
+            <button id="mirror-btn">Mirror Camera: ON</button>
+        </div>
 
-    <video id="videoElement" width="640" height="360" autoplay playsinline muted style="border: 2px solid red; display: block; margin: 0 auto;"></video>    
+        <video id="videoElement" width="640" height="360" autoplay playsinline muted style="border: 2px solid red; display: block; margin: 0 auto;"></video>
+    </div>
     <div id="scan-overlay" class="modal hidden">
         <div style="text-align: center;">
             <h1 id="countdown-text" style="font-size: 100px; color: #58a6ff; margin: 0;">3</h1>

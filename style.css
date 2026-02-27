@@ -246,32 +246,27 @@ input, button {
 
 /* --- NEW GLOBAL ZOOM & MIRROR STYLES --- */
 :root {
-    --ui-zoom: 1; /* This is our master zoom variable */
+    --ui-zoom: 1; /* Master zoom variable */
 }
 
-/* Apply zoom and a smooth transition to all independent UI blocks */
-.container, 
-#mirror-wrapper, 
+/* Scale the wrapper that holds the website content */
+#zoom-wrapper {
+    transform: scale(var(--ui-zoom));
+    transform-origin: top center;
+    transition: transform 0.05s linear;
+    width: 100%; 
+}
+
+/* Scale popups inside their full-screen dark backgrounds */
 .modal-content, 
 #scan-overlay > div {
     transform: scale(var(--ui-zoom));
     transition: transform 0.05s linear;
 }
 
-/* Make sure the main container scales from the top so it doesn't push off-screen */
-.container {
-    transform-origin: top center;
-}
-
-/* The video element gets special rules so Zoom and Mirror don't fight */
-#videoElement {
-    transform: scale(var(--ui-zoom));
-    transition: transform 0.05s linear;
-}
-
+/* The wrapper handles zoom, so the video just needs to flip */
 #videoElement.mirrored {
-    /* Flips horizontally AND applies the current zoom level simultaneously */
-    transform: scaleX(calc(-1 * var(--ui-zoom))) scaleY(var(--ui-zoom));
+    transform: scaleX(-1);
 }
 
 /* --- NEW OCR SCANNER STYLES --- */
