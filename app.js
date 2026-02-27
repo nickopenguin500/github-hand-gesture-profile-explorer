@@ -4,12 +4,6 @@ document.addEventListener('click', (event) => {
         const usernameInput = document.getElementById('username-input');
         if (usernameInput && usernameInput.value.trim()) {
             fetchGitHubProfile(usernameInput.value.trim());
-        }// --- 1. MOUSE & BUTTON CONTROLS ---
-document.addEventListener('click', (event) => {
-    if (event.target.id === 'search-btn') {
-        const usernameInput = document.getElementById('username-input');
-        if (usernameInput && usernameInput.value.trim()) {
-            fetchGitHubProfile(usernameInput.value.trim());
         }
     } else if (event.target.id === 'scan-btn') {
         startOcrProcess();
@@ -60,7 +54,6 @@ document.addEventListener('hand-pinch', (event) => {
         elementUnderPinch.click(); 
     }
 });
-
 
 // --- 3. OCR SCANNER LOGIC ---
 async function startOcrProcess() {
