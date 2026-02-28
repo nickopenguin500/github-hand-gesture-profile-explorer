@@ -66,7 +66,6 @@ async function startOcrProcess() {
     errorText.classList.add('hidden');
     overlay.classList.remove('hidden');
     
-    // Run the 3-second countdown
     for (let i = 3; i > 0; i--) {
         countdownText.innerText = i;
         statusText.innerText = "Hold paper steady and close to camera...";
@@ -77,77 +76,68 @@ async function startOcrProcess() {
     statusText.innerText = "Processing image...";
     await new Promise(resolve => setTimeout(resolve, 50));
 
-    // Create canvas matching the new higher video resolution
     const canvas = document.createElement('canvas');
     canvas.width = videoElement.videoWidth;
     canvas.height = videoElement.videoHeight;
     const ctx = canvas.getContext('2d');
     
-    // --- NEW: MATCH THE VISUAL MIRROR STATE ---
-    // If the camera is mirrored on screen, flip the canvas so Tesseract sees exactly what you see
-    if (videoElement.classList.contains('mirrored')) {
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
-    }
-
-    // Draw the raw video frame
-    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-
-    // Reset the transform before doing our high-contrast pixel manipulation
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    let foundUsername = null;
     
-    // --- NEW: IMAGE PRE-PROCESSING (Grayscale & High Contrast) ---
-    let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    let pixels = imgData.data;
+    // --- THE INVINCIBLE OCR LOOP ---
+    // Try the raw camera feed first. If it fails, try the horizontally flipped version!
+    const orientations = [false, true]; 
     
-    for (let i = 0; i < pixels.length; i += 4) {
-        let r = pixels[i];
-        let g = pixels[i+1];
-        let b = pixels[i+2];
-        
-        // Convert to grayscale
-        let gray = 0.299 * r + 0.587 * g + 0.114 * b;
-        
-        // Binarize (Thresholding): If it's dark, make it pure black. If light, pure white.
-        // You can adjust the '100' threshold value if your room is darker/brighter.
-        let val = gray < 100 ? 0 : 255; 
-        
-        pixels[i] = val;     // Red
-        pixels[i+1] = val;   // Green
-        pixels[i+2] = val;   // Blue
-    }
-    ctx.putImageData(imgData, 0, 0);
-    // -------------------------------------------------------------
-
-    try {
-        // Pass the highly-contrasted image to Tesseract
-        const result = await Tesseract.recognize(canvas, 'eng');
-        
-        // Log the full output so you can see exactly what it thought it saw
-        console.log("Full OCR Output:", result.data.text);
-        
-        // Clean up text and grab strings that are at least 3 characters long 
-        // to avoid grabbing random background noise like "A" or "I"
-        const rawText = result.data.text.trim();
-        const matches = rawText.match(/[a-zA-Z0-9-]{3,}/g); 
-        
-        overlay.classList.add('hidden');
-        
-        if (matches && matches.length > 0) {
-            // Pick the longest valid-looking string in case it reads background junk
-            let bestMatch = matches.sort((a, b) => b.length - a.length)[0];
-            
-            document.getElementById('username-input').value = bestMatch;
-            fetchGitHubProfile(bestMatch);
+    for (let isFlipped of orientations) {
+        if (isFlipped) {
+            console.log("First pass didn't find a username. Flipping image...");
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
         } else {
-            errorText.innerText = "No clear username detected. Try writing larger/darker!";
-            errorText.classList.remove('hidden');
+            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
         }
         
-    } catch (err) {
-        console.error("OCR Error:", err);
-        overlay.classList.add('hidden');
-        errorText.innerText = "Image processing failed.";
+        // --- IMAGE PRE-PROCESSING (Grayscale & High Contrast) ---
+        let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let pixels = imgData.data;
+        
+        for (let i = 0; i < pixels.length; i += 4) {
+            let r = pixels[i], g = pixels[i+1], b = pixels[i+2];
+            let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+            let val = gray < 100 ? 0 : 255; 
+            
+            pixels[i] = val;     
+            pixels[i+1] = val;   
+            pixels[i+2] = val;   
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        try {
+            const result = await Tesseract.recognize(canvas, 'eng');
+            console.log(`OCR Output (Flipped: ${isFlipped}):`, result.data.text);
+            
+            const rawText = result.data.text.trim();
+            const matches = rawText.match(/[a-zA-Z0-9-]{3,}/g); 
+            
+            if (matches && matches.length > 0) {
+                // Grab the longest valid string
+                foundUsername = matches.sort((a, b) => b.length - a.length)[0];
+                break; // WE FOUND A NAME! Break the loop so we don't waste time running the flipped pass.
+            }
+        } catch (err) {
+            console.error("OCR Error on pass:", err);
+        }
+    }
+    // --------------------------------
+
+    overlay.classList.add('hidden');
+    
+    if (foundUsername) {
+        document.getElementById('username-input').value = foundUsername;
+        fetchGitHubProfile(foundUsername);
+    } else {
+        errorText.innerText = "No clear username detected. Try writing larger/darker!";
         errorText.classList.remove('hidden');
     }
 }
