@@ -46,3 +46,8 @@ The Catch: Human hands naturally shake. Direct 1:1 mapping of your hand's positi
 34. when i zoom in or out and press scan camera, it is always in some weird place not centered, could that specifically be fixed no matter the zoom?
 35. now can you add a help button that gives explanations of how to use each hand motion?
 36. clicking on the button doesnt do anything, i think theres an error in the html code
+37. wait can you make it so the scan document thing is mirrored? right now, if i have mirror on, I have to switch to mirror Off to scan a document that I wrote properly. or i can scan a document thats backwards
+38. what if someones camera comes mirrored tho, i want just want to flip it so its normal for everyone
+39. it feels less accurate now tho
+40. ok now its just always saying no username detected, can we just go back to the working version but flip it like i asked?
+41. no no i want to go to the version where it depended on whether or not you had mirror toggling enabled
