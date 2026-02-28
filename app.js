@@ -83,11 +83,13 @@ async function startOcrProcess() {
     canvas.height = videoElement.videoHeight;
     const ctx = canvas.getContext('2d');
     
-    // --- FLIP THE IMAGE ---
-    // This permanently flips the canvas horizontally before taking the picture, 
-    // fixing the backwards camera issue for everyone!
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1);
+    // --- MATCH THE VISUAL MIRROR STATE ---
+    // If the camera is mirrored on screen, flip the canvas so Tesseract sees exactly what you see
+    if (videoElement.classList.contains('mirrored')) {
+        ctx.translate(canvas.width, 0);
+        ctx.scale(-1, 1);
+    }
+
     ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
 
     // Reset the transform before doing our high-contrast pixel manipulation
