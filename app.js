@@ -81,61 +81,58 @@ async function startOcrProcess() {
     canvas.height = videoElement.videoHeight;
     const ctx = canvas.getContext('2d');
     
-    let foundUsername = null;
+    // --- NEW: THE CONFIDENCE TOURNAMENT ---
+    let bestText = "";
+    let highestConfidence = 0;
     
-    // --- THE INVINCIBLE OCR LOOP ---
-    // Try the raw camera feed first. If it fails, try the horizontally flipped version!
-    const orientations = [false, true]; 
-    
-    for (let isFlipped of orientations) {
+    // Run both normal AND flipped passes every time
+    for (let isFlipped of [false, true]) {
+        // Reset the canvas transformation for each pass
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        
         if (isFlipped) {
-            console.log("First pass didn't find a username. Flipping image...");
             ctx.translate(canvas.width, 0);
             ctx.scale(-1, 1);
-            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-            ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset transform
-        } else {
-            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-        }
+        } 
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
         
-        // --- IMAGE PRE-PROCESSING (Grayscale & High Contrast) ---
+        // High contrast filter
         let imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         let pixels = imgData.data;
-        
         for (let i = 0; i < pixels.length; i += 4) {
             let r = pixels[i], g = pixels[i+1], b = pixels[i+2];
             let gray = 0.299 * r + 0.587 * g + 0.114 * b;
             let val = gray < 100 ? 0 : 255; 
-            
-            pixels[i] = val;     
-            pixels[i+1] = val;   
-            pixels[i+2] = val;   
+            pixels[i] = val; pixels[i+1] = val; pixels[i+2] = val;   
         }
         ctx.putImageData(imgData, 0, 0);
 
         try {
             const result = await Tesseract.recognize(canvas, 'eng');
-            console.log(`OCR Output (Flipped: ${isFlipped}):`, result.data.text);
+            console.log(`Pass (Flipped: ${isFlipped}) Confidence: ${result.data.confidence}%`);
+            console.log(`Pass (Flipped: ${isFlipped}) Text:`, result.data.text.trim());
             
-            const rawText = result.data.text.trim();
-            const matches = rawText.match(/[a-zA-Z0-9-]{3,}/g); 
-            
-            if (matches && matches.length > 0) {
-                // Grab the longest valid string
-                foundUsername = matches.sort((a, b) => b.length - a.length)[0];
-                break; // WE FOUND A NAME! Break the loop so we don't waste time running the flipped pass.
+            // Keep the text that Tesseract is most confident about
+            if (result.data.confidence > highestConfidence) {
+                highestConfidence = result.data.confidence;
+                bestText = result.data.text;
             }
         } catch (err) {
             console.error("OCR Error on pass:", err);
         }
     }
-    // --------------------------------
+    // ----------------------------------------
 
     overlay.classList.add('hidden');
     
-    if (foundUsername) {
-        document.getElementById('username-input').value = foundUsername;
-        fetchGitHubProfile(foundUsername);
+    // Now we extract the username from the WINNING text
+    const rawText = bestText.trim();
+    const matches = rawText.match(/[a-zA-Z0-9-]{3,}/g); 
+    
+    if (matches && matches.length > 0) {
+        let bestMatch = matches.sort((a, b) => b.length - a.length)[0];
+        document.getElementById('username-input').value = bestMatch;
+        fetchGitHubProfile(bestMatch);
     } else {
         errorText.innerText = "No clear username detected. Try writing larger/darker!";
         errorText.classList.remove('hidden');
