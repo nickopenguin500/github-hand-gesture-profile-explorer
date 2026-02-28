@@ -83,9 +83,9 @@ async function startOcrProcess() {
     canvas.height = videoElement.videoHeight;
     const ctx = canvas.getContext('2d');
     
-    // --- MATCH THE VISUAL MIRROR STATE ---
-    // If the camera is mirrored on screen, flip the canvas so Tesseract sees exactly what you see
-    if (videoElement.classList.contains('mirrored')) {
+    // --- REVERSED MIRROR LOGIC ---
+    // We added a "!" here. It now flips the canvas when the mirrored class is NOT active.
+    if (!videoElement.classList.contains('mirrored')) {
         ctx.translate(canvas.width, 0);
         ctx.scale(-1, 1);
     }
